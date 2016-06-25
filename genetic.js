@@ -1,6 +1,6 @@
 var GeneticAlgorithm = function () {};
 
-GeneticAlgorithm.prototype.generate = function(length) {
+GeneticAlgorithm.prototype.generate = function(length) { //Generate new chromosome 
   var chromosome='';
   for(var i=0;i<length;i++){
     chromosome+=Math.round(Math.random()).toString();
@@ -8,7 +8,7 @@ GeneticAlgorithm.prototype.generate = function(length) {
   return chromosome;
 };
 
-GeneticAlgorithm.prototype.select = function(population, fitnesses,fitSum) {
+GeneticAlgorithm.prototype.select = function(population, fitnesses,fitSum) { //select chromosome according to roulette wheel algorithm
   var level=Math.random()*fitSum;
   var sum=0;
   for(var i in fitnesses){
@@ -17,14 +17,14 @@ GeneticAlgorithm.prototype.select = function(population, fitnesses,fitSum) {
   }
 };
 
-GeneticAlgorithm.prototype.mutate = function(chromosome, p) {
+GeneticAlgorithm.prototype.mutate = function(chromosome, p) { //mutate one chromosome, it may happen on any bit of the chromosome
   for(var i in chromosome){
     if(Math.random()<p) chromosome[i]=1-chromosome[i];
   }
   return chromosome;
 };
 
-GeneticAlgorithm.prototype.crossover = function(chromosome1, chromosome2, p) {
+GeneticAlgorithm.prototype.crossover = function(chromosome1, chromosome2, p) { //crossover two chromosomes, it may happen and start from a randome bit
     if(Math.random()<p){
        var p=Math.round(Math.random()*(chromosome1.length-1));
        var temp=chromosome2;
@@ -34,11 +34,18 @@ GeneticAlgorithm.prototype.crossover = function(chromosome1, chromosome2, p) {
     return [chromosome1,chromosome2];
 };
 
-GeneticAlgorithm.prototype.run = function(fitness, length, p_c, p_m, iterations) {
+/*
+@param fitness  function returning the fitness value of a chromosome, 
+@param length  length of chromosome,
+@param p_c  possibility of crossover,
+@param p_m  possibility of mutate, 
+@param iterations how many times for evolving
+*/
+GeneticAlgorithm.prototype.run = function(fitness, length, p_c, p_m, iterations) {   
   iterations=iterations||100;
   var population=[];
   var fitnesses=[];
-  var number=240;
+  var number=240; //number of population
   var fitSum=0;
 
   for(var i=0;i<number;i++){
